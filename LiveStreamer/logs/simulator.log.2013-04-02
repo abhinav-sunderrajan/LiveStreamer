@@ -1,0 +1,83 @@
+2013-04-02 22:11:35.537 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy data
+2013-04-02 22:11:35.569 [ERROR] mcomp.dissertation.live.streamer.AbstractLiveStreamer:71 - Error finding the required file to stream off..
+java.lang.Exception: Unable to initialize file data - check directory path.
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.readFileData(AbstractLiveStreamer.java:141)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.<init>(AbstractLiveStreamer.java:54)
+	at mcomp.dissertation.live.streamer.LiveTrafficStreamer.<init>(LiveTrafficStreamer.java:36)
+	at mcomp.dissertation.live.StreamerCore.startLiveStreams(StreamerCore.java:118)
+	at mcomp.dissertation.live.StreamerCore.main(StreamerCore.java:92)
+2013-04-02 22:13:09.466 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy data
+2013-04-02 22:13:09.482 [ERROR] mcomp.dissertation.live.streamer.AbstractLiveStreamer:71 - Error finding the required file to stream off..
+java.lang.Exception: Unable to initialize file data - check directory path.
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.readFileData(AbstractLiveStreamer.java:141)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.<init>(AbstractLiveStreamer.java:54)
+	at mcomp.dissertation.live.streamer.LiveTrafficStreamer.<init>(LiveTrafficStreamer.java:36)
+	at mcomp.dissertation.live.StreamerCore.startLiveStreams(StreamerCore.java:118)
+	at mcomp.dissertation.live.StreamerCore.main(StreamerCore.java:92)
+2013-04-02 22:14:40.290 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:14:40.291 [ERROR] mcomp.dissertation.live.streamer.AbstractLiveStreamer:71 - Error finding the required file to stream off..
+java.lang.IllegalArgumentException
+	at java.util.Date.parse(Unknown Source)
+	at java.util.Date.<init>(Unknown Source)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.getDateFromFileName(AbstractLiveStreamer.java:152)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.access$3(AbstractLiveStreamer.java:148)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer$1.accept(AbstractLiveStreamer.java:126)
+	at java.io.File.listFiles(Unknown Source)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.readFileData(AbstractLiveStreamer.java:113)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.<init>(AbstractLiveStreamer.java:54)
+	at mcomp.dissertation.live.streamer.LiveTrafficStreamer.<init>(LiveTrafficStreamer.java:36)
+	at mcomp.dissertation.live.StreamerCore.startLiveStreams(StreamerCore.java:118)
+	at mcomp.dissertation.live.StreamerCore.main(StreamerCore.java:92)
+2013-04-02 22:15:30.961 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:15:30.976 [ERROR] mcomp.dissertation.live.streamer.AbstractLiveStreamer:71 - Error finding the required file to stream off..
+java.lang.IllegalArgumentException
+	at java.util.Date.parse(Unknown Source)
+	at java.util.Date.<init>(Unknown Source)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.getDateFromFileName(AbstractLiveStreamer.java:152)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.access$3(AbstractLiveStreamer.java:148)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer$1.accept(AbstractLiveStreamer.java:126)
+	at java.io.File.listFiles(Unknown Source)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.readFileData(AbstractLiveStreamer.java:113)
+	at mcomp.dissertation.live.streamer.AbstractLiveStreamer.<init>(AbstractLiveStreamer.java:54)
+	at mcomp.dissertation.live.streamer.LiveTrafficStreamer.<init>(LiveTrafficStreamer.java:36)
+	at mcomp.dissertation.live.StreamerCore.startLiveStreams(StreamerCore.java:118)
+	at mcomp.dissertation.live.StreamerCore.main(StreamerCore.java:92)
+2013-04-02 22:19:31.243 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:25:19.894 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:25:43.951 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:33:39.531 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:33:40.468 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 22:38:41.175 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:38:42.112 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 22:40:10.333 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:40:10.723 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 22:44:54.947 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:44:55.338 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 22:52:19.496 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:52:20.230 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 22:58:52.487 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:112 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 22:58:53.050 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:06:27.465 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:06:27.886 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:06:57.872 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:06:58.293 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:07:34.960 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:07:35.335 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:28:32.442 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:28:33.254 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:30:41.225 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:30:41.632 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:84 - Connected to server
+2013-04-02 23:31:25.431 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:31:25.837 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:84 - Connected to server
+2013-04-02 23:37:28.794 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:37:29.466 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:39:14.534 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:39:14.955 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:39:55.097 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:39:55.487 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:85 - Connected to server
+2013-04-02 23:40:32.179 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:40:32.632 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:84 - Connected to server
+2013-04-02 23:45:30.730 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:45:32.385 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:87 - Connected to server
+2013-04-02 23:46:09.198 [INFO] mcomp.dissertation.live.streamer.AbstractLiveStreamer:113 - Reading live data from C:\Users\Usha Sundarajan\Documents\ProjectData\dummy traffic
+2013-04-02 23:46:09.901 [INFO] mcomp.dissertation.live.serverconnect.NettyServerConnect:87 - Connected to server
