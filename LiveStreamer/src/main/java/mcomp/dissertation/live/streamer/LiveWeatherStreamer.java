@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import mcomp.dissertation.live.beans.LiveWeatherBean;
+import mcomp.dissertation.beans.LiveWeatherBean;
 
 public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
 

@@ -3,11 +3,12 @@ package mcomp.dissertation.live.streamer;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import mcomp.dissertation.live.beans.LiveTrafficBean;
+import mcomp.dissertation.beans.LiveTrafficBean;
 
 /**
  * 
@@ -17,6 +18,7 @@ import mcomp.dissertation.live.beans.LiveTrafficBean;
 public class LiveTrafficStreamer extends AbstractLiveStreamer<LiveTrafficBean> {
 
    private DateFormat df;
+   private DateFormat dfLocal;
 
    /**
     * 
@@ -35,6 +37,7 @@ public class LiveTrafficStreamer extends AbstractLiveStreamer<LiveTrafficBean> {
       super(streamRate, monitor, executor, folderLocation, dateString,
             serverIP, serverPort);
       this.df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+      this.dfLocal = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss.SSS");
 
    }
 
@@ -42,7 +45,7 @@ public class LiveTrafficStreamer extends AbstractLiveStreamer<LiveTrafficBean> {
    protected LiveTrafficBean parseLine(String line) {
       LiveTrafficBean bean = new LiveTrafficBean();
       try {
-
+         bean.setEventTime(dfLocal.format(Calendar.getInstance().getTime()));
          String[] items = line.split("\\|");
          bean.setLinkId(Integer.parseInt(items[0].trim()));
 

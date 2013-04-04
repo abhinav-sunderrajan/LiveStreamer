@@ -78,7 +78,7 @@ public class NettyServerConnect<E> {
          public ChannelPipeline getPipeline() {
             return Channels.pipeline(new ObjectEncoder(), new ObjectDecoder(
                   ClassResolvers.cacheDisabled(getClass().getClassLoader())),
-                  new LiveBeanSender(), new PleaseWork());
+                  new SendUpStream(), new LiveBeanSender());
          }
       });
       future = bootstrap.connect(new InetSocketAddress(serverAddr, serverPort));
@@ -95,13 +95,13 @@ public class NettyServerConnect<E> {
     * 
     */
 
-   private class LiveBeanSender extends SimpleChannelHandler {
+   private class SendUpStream extends SimpleChannelHandler {
       private Runnable runnable;
       private Channel channel;
       ChannelHandlerContext context;
       private ChannelEvent responseEvent;
 
-      private LiveBeanSender() {
+      private SendUpStream() {
          runnable = new Runnable() {
             public void run() {
                while (buffer.isEmpty()) {
@@ -141,7 +141,7 @@ public class NettyServerConnect<E> {
       }
    }
 
-   private class PleaseWork extends SimpleChannelHandler {
+   private class LiveBeanSender extends SimpleChannelHandler {
       @Override
       public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
             throws Exception {

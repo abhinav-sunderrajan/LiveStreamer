@@ -3,7 +3,7 @@ package mcomp.dissertation.live.streamer;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
-import mcomp.dissertation.live.beans.LiveTrafficBean;
+import mcomp.dissertation.beans.LiveTrafficBean;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;

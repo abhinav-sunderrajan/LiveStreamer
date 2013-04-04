@@ -1,4 +1,4 @@
-package mcomp.dissertation.live.beans;
+package mcomp.dissertation.beans;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
