@@ -48,6 +48,8 @@ public class LocalNettyServer {
    }
 
    private static class FirstHandshake extends SimpleChannelHandler {
+      private int count = 0;
+
       @Override
       public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
             throws Exception {
@@ -64,11 +66,16 @@ public class LocalNettyServer {
             }
          } else {
             Object obj = e.getMessage();
+            count++;
             LiveTrafficBean bean;
             if (obj instanceof LiveTrafficBean) {
                bean = (LiveTrafficBean) obj;
-               System.out.println("Speed on " + bean.getLinkId() + " at "
-                     + bean.getTimeStamp() + " is " + bean.getAvgSpeed());
+               if (count % 1000 == 0) {
+                  System.out.println("Speed on " + bean.getLinkId() + " at "
+                        + bean.getTimeStamp() + " is " + bean.getAvgSpeed());
+
+               }
+
             }
          }
 

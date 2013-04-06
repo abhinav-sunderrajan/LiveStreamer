@@ -2,7 +2,7 @@
 <traffic server="localhost" port="8080">
 <streamname>traffic</streamname>
 </traffic>
-<weather server="localhost" port="9090">
+<weather server="a0092715-z.comp.nus.edu.sg" port="9090">
 <streamname>weather</streamname>
 </weather>
 </streamlist>

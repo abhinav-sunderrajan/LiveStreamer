@@ -142,6 +142,8 @@ public class NettyServerConnect<E> {
    }
 
    private class LiveBeanSender extends SimpleChannelHandler {
+      private long count = 0;
+
       @Override
       public void messageReceived(ChannelHandlerContext ctx, MessageEvent e)
             throws Exception {
@@ -152,6 +154,13 @@ public class NettyServerConnect<E> {
          responseEvent = new DownstreamMessageEvent(channel, channelFuture,
                e.getMessage(), channel.getRemoteAddress());
          ctx.sendDownstream(responseEvent);
+         count++;
+         if (count % 1000 == 0) {
+            long freemem = Runtime.getRuntime().freeMemory();
+            long totalmem = Runtime.getRuntime().totalMemory();
+            LOGGER.info("Count is " + count + " and free mem % is"
+                  + (freemem * 100.0 / (freemem + totalmem)));
+         }
 
       }
 
