@@ -6,10 +6,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import mcomp.dissertation.beans.LiveTrafficBean;
+import mcomp.dissertation.beans.LiveWeatherBean;
 import mcomp.dissertation.live.streamer.AbstractLiveStreamer;
 import mcomp.dissertation.live.streamer.LiveTrafficStreamer;
 import mcomp.dissertation.live.streamer.LiveWeatherStreamer;
@@ -112,17 +115,19 @@ public final class StreamerCore {
          String serverIP = stream.attribute(0).getText();
          int serverPort = Integer.parseInt(stream.attribute(1).getText());
          if (stream.elementText("streamname").equalsIgnoreCase("traffic")) {
+            ConcurrentLinkedQueue<LiveTrafficBean> trafficBuffer = new ConcurrentLinkedQueue<LiveTrafficBean>();
             streamers[count] = new LiveTrafficStreamer(streamRate, monitor,
                   executor,
                   configProperties.getProperty("traffic.live.data.folder"),
                   configProperties.getProperty("live.data.date"), serverIP,
-                  serverPort);
+                  serverPort, trafficBuffer);
          } else {
+            ConcurrentLinkedQueue<LiveWeatherBean> weatherBuffer = new ConcurrentLinkedQueue<LiveWeatherBean>();
             streamers[count] = new LiveWeatherStreamer(streamRate, monitor,
                   executor,
                   configProperties.getProperty("weather.live.data.folder"),
                   configProperties.getProperty("live.data.date"), serverIP,
-                  serverPort);
+                  serverPort, weatherBuffer);
 
          }
 

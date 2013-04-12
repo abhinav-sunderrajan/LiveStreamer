@@ -20,7 +20,6 @@ import org.apache.log4j.Logger;
 public abstract class AbstractLiveStreamer<E> {
 
    private File file;
-   private BufferedReader br;
    private AtomicInteger streamRate;
    private ScheduledExecutorService executor;
    private String folderLocation;
@@ -28,6 +27,7 @@ public abstract class AbstractLiveStreamer<E> {
    private ConcurrentLinkedQueue<E> buffer;
    private String serverIP;
    private int serverPort;
+   protected BufferedReader br;
    private static final Logger LOGGER = Logger
          .getLogger(AbstractLiveStreamer.class);
 
@@ -44,7 +44,8 @@ public abstract class AbstractLiveStreamer<E> {
    public AbstractLiveStreamer(final AtomicInteger streamRate,
          final Object monitor, final ScheduledExecutorService executor,
          final String folderLocation, final String dateString,
-         final String serverIP, final int serverPort) {
+         final String serverIP, final int serverPort,
+         final ConcurrentLinkedQueue<E> buffer) {
 
       try {
          this.streamRate = streamRate;
@@ -54,13 +55,9 @@ public abstract class AbstractLiveStreamer<E> {
          this.file = readFileData();
          this.executor = executor;
          this.serverPort = serverPort;
-         this.buffer = new ConcurrentLinkedQueue<E>();
+         this.buffer = buffer;
          this.br = new BufferedReader(new FileReader(file));
-
-         Thread bufferThread = new Thread(new AddToBuffer());
-         bufferThread.setDaemon(true);
          createServerSettings();
-         bufferThread.start();
 
       } catch (IOException e) {
          LOGGER.error("Error parsing the file", e);
@@ -78,28 +75,6 @@ public abstract class AbstractLiveStreamer<E> {
       NettyServerConnect<E> send = new NettyServerConnect<E>(serverIP, buffer,
             executor, streamRate.get());
       send.connectToNettyServer(serverPort);
-
-   }
-
-   /**
-    * 
-    * This thread reads data of the parsed file and adds it to the buffer.
-    * 
-    */
-   private class AddToBuffer implements Runnable {
-
-      public void run() {
-         try {
-            while (br.ready()) {
-               E bean = parseLine(br.readLine());
-               buffer.add(bean);
-            }
-         } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-         }
-
-      }
 
    }
 
@@ -160,5 +135,7 @@ public abstract class AbstractLiveStreamer<E> {
     * @return the parsed record from the file as a Java bean object
     */
    protected abstract E parseLine(final String line);
+
+   protected abstract void startBufferThread();
 
 }
