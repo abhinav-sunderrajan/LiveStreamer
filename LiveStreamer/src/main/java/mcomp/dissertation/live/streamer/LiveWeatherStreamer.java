@@ -30,7 +30,7 @@ public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
          final String serverIP, int serverPort) {
       super(streamRate, monitor, executor, folderLocation, dateString,
             serverIP, serverPort);
-      this.df = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss aaa");
+      this.df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
    }
 

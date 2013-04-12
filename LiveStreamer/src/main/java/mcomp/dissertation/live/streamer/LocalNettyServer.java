@@ -4,6 +4,7 @@ import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
 
 import mcomp.dissertation.beans.LiveTrafficBean;
+import mcomp.dissertation.beans.LiveWeatherBean;
 
 import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
@@ -44,6 +45,7 @@ public class LocalNettyServer {
       bootstrap.setOption("child.keepAlive", true);
 
       bootstrap.bind(new InetSocketAddress(8080));
+      bootstrap.bind(new InetSocketAddress(9090));
       System.out.println("Started the server");
    }
 
@@ -67,12 +69,22 @@ public class LocalNettyServer {
          } else {
             Object obj = e.getMessage();
             count++;
-            LiveTrafficBean bean;
+            LiveTrafficBean traffic;
+            LiveWeatherBean weather;
             if (obj instanceof LiveTrafficBean) {
-               bean = (LiveTrafficBean) obj;
+               traffic = (LiveTrafficBean) obj;
                if (count % 1000 == 0) {
-                  System.out.println("Speed on " + bean.getLinkId() + " at "
-                        + bean.getTimeStamp() + " is " + bean.getAvgSpeed());
+                  System.out.println("Speed on " + traffic.getLinkId() + " at "
+                        + traffic.getTimeStamp() + " is "
+                        + traffic.getAvgSpeed());
+
+               }
+
+            } else {
+               weather = (LiveWeatherBean) obj;
+               if (count % 1000 == 0) {
+                  System.out.println("Rain at " + weather.getLinkId() + " at "
+                        + weather.getTimeStamp() + " is " + weather.getRain());
 
                }
 

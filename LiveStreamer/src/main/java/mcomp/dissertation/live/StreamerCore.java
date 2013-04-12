@@ -12,6 +12,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import mcomp.dissertation.live.streamer.AbstractLiveStreamer;
 import mcomp.dissertation.live.streamer.LiveTrafficStreamer;
+import mcomp.dissertation.live.streamer.LiveWeatherStreamer;
 
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
@@ -117,11 +118,11 @@ public final class StreamerCore {
                   configProperties.getProperty("live.data.date"), serverIP,
                   serverPort);
          } else {
-            // streamers[count] = new LiveWeatherStreamer(streamRate, monitor,
-            // executor,
-            // configProperties.getProperty("weather.live.data.folder"),
-            // configProperties.getProperty("live.data.date"), serverIP,
-            // serverPort);
+            streamers[count] = new LiveWeatherStreamer(streamRate, monitor,
+                  executor,
+                  configProperties.getProperty("weather.live.data.folder"),
+                  configProperties.getProperty("live.data.date"), serverIP,
+                  serverPort);
 
          }
 

@@ -7,6 +7,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
+import mcomp.dissertation.beans.LiveTrafficBean;
+
 import org.apache.log4j.Logger;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
@@ -151,15 +153,20 @@ public class NettyServerConnect<E> {
          Channel channel = e.getChannel();
          ChannelFuture channelFuture = Channels.future(e.getChannel());
          ChannelEvent responseEvent;
+         Object bean = e.getMessage();
          responseEvent = new DownstreamMessageEvent(channel, channelFuture,
-               e.getMessage(), channel.getRemoteAddress());
+               bean, channel.getRemoteAddress());
          ctx.sendDownstream(responseEvent);
          count++;
          if (count % 1000 == 0) {
             long freemem = Runtime.getRuntime().freeMemory();
             long totalmem = Runtime.getRuntime().totalMemory();
-            LOGGER.info("Count is " + count + " and free mem % is"
-                  + (freemem * 100.0 / (freemem + totalmem)));
+            if (bean instanceof LiveTrafficBean) {
+               LOGGER.info("Count is " + count + " and free mem % is "
+                     + (freemem * 100.0 / (freemem + totalmem)) + " at "
+                     + ((LiveTrafficBean) bean).getTimeStamp());
+            }
+
          }
 
       }
