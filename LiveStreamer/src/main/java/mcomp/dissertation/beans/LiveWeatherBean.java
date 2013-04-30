@@ -3,13 +3,16 @@ package mcomp.dissertation.beans;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+/**
+ * Bean class representing the dummy weather link data.
+ */
 public class LiveWeatherBean implements Serializable {
 
-   private static final long serialVersionUID = 7618583543776349810L;
    private long linkId;
    private double rain;
    private double temperature;
    private Timestamp timeStamp;
+   private static final long serialVersionUID = 7618583543776349810L;
 
    /**
     * @return the linkId

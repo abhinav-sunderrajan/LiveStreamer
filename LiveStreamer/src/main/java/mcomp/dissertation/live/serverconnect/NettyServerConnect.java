@@ -8,6 +8,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import mcomp.dissertation.beans.LiveTrafficBean;
+import mcomp.dissertation.beans.LiveWeatherBean;
 
 import org.apache.log4j.Logger;
 import org.jboss.netty.bootstrap.ClientBootstrap;
@@ -162,9 +163,14 @@ public class NettyServerConnect<E> {
             long freemem = Runtime.getRuntime().freeMemory();
             long totalmem = Runtime.getRuntime().totalMemory();
             if (bean instanceof LiveTrafficBean) {
-               LOGGER.info("Count is " + count + " and free mem % is "
+               LOGGER.info("Traffic count is " + count + " and free mem % is "
                      + (freemem * 100.0 / (freemem + totalmem)) + " at "
                      + ((LiveTrafficBean) bean).getTimeStamp());
+            }
+
+            if (bean instanceof LiveWeatherBean) {
+               LOGGER.info("Weather count is " + count + " at "
+                     + ((LiveWeatherBean) bean).getTimeStamp());
             }
 
          }

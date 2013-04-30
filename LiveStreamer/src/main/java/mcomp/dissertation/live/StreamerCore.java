@@ -16,6 +16,7 @@ import mcomp.dissertation.beans.LiveWeatherBean;
 import mcomp.dissertation.live.streamer.AbstractLiveStreamer;
 import mcomp.dissertation.live.streamer.LiveTrafficStreamer;
 import mcomp.dissertation.live.streamer.LiveWeatherStreamer;
+import net.sourceforge.sizeof.SizeOf;
 
 import org.apache.log4j.Logger;
 import org.dom4j.Document;
@@ -98,12 +99,16 @@ public final class StreamerCore {
          LOGGER.error("Unable to find xml file containing stream info", e);
       } catch (DocumentException e) {
          LOGGER.error("Erroneous stream info xml file. Please check", e);
+      } catch (InterruptedException e) {
+         LOGGER.error(
+               "Error in delaying the traffic data stream wrt to weather data stream",
+               e);
       }
    }
 
    @SuppressWarnings("unchecked")
    private void startLiveStreams() throws FileNotFoundException,
-         DocumentException {
+         DocumentException, InterruptedException {
       reader = new SAXReader();
       InputStream configxml = new FileInputStream(xmlFilePath);
       reader = new SAXReader();
@@ -114,20 +119,29 @@ public final class StreamerCore {
       for (Element stream : streams) {
          String serverIP = stream.attribute(0).getText();
          int serverPort = Integer.parseInt(stream.attribute(1).getText());
-         if (stream.elementText("streamname").equalsIgnoreCase("traffic")) {
-            ConcurrentLinkedQueue<LiveTrafficBean> trafficBuffer = new ConcurrentLinkedQueue<LiveTrafficBean>();
-            streamers[count] = new LiveTrafficStreamer(streamRate, monitor,
-                  executor,
-                  configProperties.getProperty("traffic.live.data.folder"),
-                  configProperties.getProperty("live.data.date"), serverIP,
-                  serverPort, trafficBuffer);
-         } else {
+         if (stream.elementText("streamname").equalsIgnoreCase("weather")) {
             ConcurrentLinkedQueue<LiveWeatherBean> weatherBuffer = new ConcurrentLinkedQueue<LiveWeatherBean>();
-            streamers[count] = new LiveWeatherStreamer(streamRate, monitor,
-                  executor,
+            LOGGER.info("Size of one weather payload in bytes is "
+                  + SizeOf.deepSizeOf(new LiveWeatherBean()));
+            streamers[count] = new LiveWeatherStreamer(
+                  (int) (streamRate.get() * Float.parseFloat(configProperties
+                        .getProperty("weather.speed.up"))), monitor, executor,
                   configProperties.getProperty("weather.live.data.folder"),
                   configProperties.getProperty("live.data.date"), serverIP,
                   serverPort, weatherBuffer);
+            // Giving a small head start for the weather stream since traffic
+            // stream is unidirectional join.
+            Thread.sleep(2000);
+
+         } else {
+            ConcurrentLinkedQueue<LiveTrafficBean> trafficBuffer = new ConcurrentLinkedQueue<LiveTrafficBean>();
+            LOGGER.info("Size of one traffic payload in bytes is "
+                  + SizeOf.deepSizeOf(new LiveTrafficBean()));
+            streamers[count] = new LiveTrafficStreamer(streamRate.get(),
+                  monitor, executor,
+                  configProperties.getProperty("traffic.live.data.folder"),
+                  configProperties.getProperty("live.data.date"), serverIP,
+                  serverPort, trafficBuffer);
 
          }
 

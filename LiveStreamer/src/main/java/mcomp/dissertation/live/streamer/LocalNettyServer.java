@@ -75,8 +75,7 @@ public class LocalNettyServer {
                traffic = (LiveTrafficBean) obj;
                if (count % 1000 == 0) {
                   System.out.println("Speed on " + traffic.getLinkId() + " at "
-                        + traffic.getTimeStamp() + " is "
-                        + traffic.getAvgSpeed());
+                        + traffic.getTimeStamp() + " is " + traffic.getSpeed());
 
                }
 

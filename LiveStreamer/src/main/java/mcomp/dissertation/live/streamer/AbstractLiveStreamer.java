@@ -8,19 +8,18 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import mcomp.dissertation.live.serverconnect.NettyServerConnect;
 
 import org.apache.log4j.Logger;
 
 /**
- * This thread is responsible for streaming live data from a CSV file.
+ * This abstract class is responsible for streaming live data from a CSV file.
  */
 public abstract class AbstractLiveStreamer<E> {
 
    private File file;
-   private AtomicInteger streamRate;
+   protected int streamRate;
    private ScheduledExecutorService executor;
    private String folderLocation;
    private String dateString;
@@ -41,10 +40,9 @@ public abstract class AbstractLiveStreamer<E> {
     * @param serverIP
     * @param serverPort
     */
-   public AbstractLiveStreamer(final AtomicInteger streamRate,
-         final Object monitor, final ScheduledExecutorService executor,
-         final String folderLocation, final String dateString,
-         final String serverIP, final int serverPort,
+   public AbstractLiveStreamer(final int streamRate, final Object monitor,
+         final ScheduledExecutorService executor, final String folderLocation,
+         final String dateString, final String serverIP, final int serverPort,
          final ConcurrentLinkedQueue<E> buffer) {
 
       try {
@@ -57,6 +55,7 @@ public abstract class AbstractLiveStreamer<E> {
          this.serverPort = serverPort;
          this.buffer = buffer;
          this.br = new BufferedReader(new FileReader(file));
+         Runtime.getRuntime().addShutdownHook(new ShutDownHook());
          createServerSettings();
 
       } catch (IOException e) {
@@ -73,7 +72,7 @@ public abstract class AbstractLiveStreamer<E> {
    private void createServerSettings() throws InterruptedException {
 
       NettyServerConnect<E> send = new NettyServerConnect<E>(serverIP, buffer,
-            executor, streamRate.get());
+            executor, streamRate);
       send.connectToNettyServer(serverPort);
 
    }
@@ -124,7 +123,6 @@ public abstract class AbstractLiveStreamer<E> {
    private Date getDateFromFileName(final String dateString) {
       String date = dateString.substring(0, 4) + "/"
             + dateString.substring(5, 7) + "/" + dateString.substring(8, 10);
-      System.out.println(dateString);
       return new Date(date);
 
    }
@@ -137,5 +135,23 @@ public abstract class AbstractLiveStreamer<E> {
    protected abstract E parseLine(final String line);
 
    protected abstract void startBufferThread();
+
+   /**
+    * 
+    * Call on JVM exit to close the buffered reader connections.
+    * 
+    */
+   private class ShutDownHook extends Thread {
+
+      public void run() {
+         LOGGER.info("Closing the buffered reader before exit..");
+         try {
+            br.close();
+         } catch (IOException e) {
+            LOGGER.error("Error closing the buffered reader", e);
+         }
+      }
+
+   }
 
 }

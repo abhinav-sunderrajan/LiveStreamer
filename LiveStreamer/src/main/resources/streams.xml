@@ -1,8 +1,8 @@
 <streamlist>
-<traffic server="localhost" port="8080">
-<streamname>traffic</streamname>
-</traffic>
 <weather server="localhost" port="9090">
 <streamname>weather</streamname>
 </weather>
+<!--  <traffic server="localhost" port="8080">
+<streamname>traffic</streamname>
+</traffic> -->
 </streamlist>

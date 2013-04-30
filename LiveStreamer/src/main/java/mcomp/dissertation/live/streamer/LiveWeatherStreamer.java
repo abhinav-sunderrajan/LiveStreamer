@@ -3,14 +3,11 @@ package mcomp.dissertation.live.streamer;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import mcomp.dissertation.beans.LiveWeatherBean;
 
@@ -20,9 +17,9 @@ public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
 
    private DateFormat df;
    private ConcurrentLinkedQueue<LiveWeatherBean> buffer;
+   private int streamRate;
    private static final Logger LOGGER = Logger
          .getLogger(LiveWeatherStreamer.class);
-   private Queue<LiveWeatherBean> replayQueue;
 
    /**
     * 
@@ -35,16 +32,15 @@ public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
     * @param serverIP
     * @param serverPort
     */
-   public LiveWeatherStreamer(final AtomicInteger streamRate,
-         final Object monitor, final ScheduledExecutorService executor,
-         final String folderLocation, final String dateString,
-         final String serverIP, int serverPort,
+   public LiveWeatherStreamer(final int streamRate, final Object monitor,
+         final ScheduledExecutorService executor, final String folderLocation,
+         final String dateString, final String serverIP, int serverPort,
          ConcurrentLinkedQueue<LiveWeatherBean> weatherBuffer) {
       super(streamRate, monitor, executor, folderLocation, dateString,
             serverIP, serverPort, weatherBuffer);
       this.df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-      this.replayQueue = new LinkedBlockingQueue<LiveWeatherBean>();
       this.buffer = weatherBuffer;
+      this.streamRate = streamRate;
       startBufferThread();
 
    }
@@ -58,8 +54,12 @@ public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
          bean.setLinkId(Integer.parseInt(items[0].trim()));
 
          Date time;
-         time = df.parse(items[3].trim());
-         bean.setTimeStamp(new Timestamp(time.getTime()));
+         if (items[3].trim().equals("") || items[3].trim() == null) {
+            time = null;
+         } else {
+            time = df.parse(items[3].trim());
+            bean.setTimeStamp(new Timestamp(time.getTime()));
+         }
          // Check if rainfall is null
          if (items[2].trim().equals("") || items[2].trim() == null) {
             bean.setRain(0);
@@ -96,49 +96,42 @@ public class LiveWeatherStreamer extends AbstractLiveStreamer<LiveWeatherBean> {
     * 
     */
    private class AddToBuffer implements Runnable {
-      private int count;
+      private int bufferCount;
       private Timestamp track;
-      private boolean flag;
 
-      AddToBuffer() {
-         count = 0;
-         flag = false;
+      public AddToBuffer() {
+         try {
+            bufferCount = 0;
+            DateFormat df = new SimpleDateFormat("dd-MMM-yyyy HH:mm:ss");
+            track = new Timestamp(df.parse("17-Apr-2011 00:00:00").getTime());
+         } catch (ParseException e) {
+            LOGGER.error("Error intializing start date for weather stream");
+         }
+
       }
 
       public void run() {
          try {
             while (br.ready()) {
                LiveWeatherBean bean = parseLine(br.readLine());
-               if (!flag) {
+               if (bean.getTimeStamp().compareTo(track) > 0) {
+                  LOGGER.info("Finished streaming records at time " + track
+                        + "wait for next update after 30 minutes");
                   track = bean.getTimeStamp();
-               }
-               flag = true;
-               if (bean.getTimeStamp().getTime() == track.getTime()) {
-                  buffer.add(bean);
-                  replayQueue.add(bean);
-               } else {
-                  while (count < 5) {
-                     Iterator<LiveWeatherBean> it = replayQueue.iterator();
-                     while (it.hasNext()) {
-                        buffer.add(it.next());
-                     }
-                     System.out.println(count);
-                     count++;
-                  }
-                  LOGGER.info("Done with replay starting to stream records from "
-                        + bean.getTimeStamp());
-                  replayQueue.clear();
-                  buffer.add(bean);
-                  replayQueue.add(bean);
-                  track = bean.getTimeStamp();
-                  flag = false;
-                  count = 0;
 
+                  // The logic behind this wait is based on the number of
+                  // milli-seconds it takes to stream one burst and wait for 5
+                  // times that time so as to make for the traffic stream.
+                  Thread.sleep(5 * streamRate * bufferCount / 1000);
+                  bufferCount = 0;
                }
-
+               buffer.add(bean);
+               bufferCount++;
             }
          } catch (IOException e) {
             LOGGER.error("Error reading a record from live traffic CSV file", e);
+         } catch (InterruptedException e) {
+            LOGGER.error("interrupted while waiting");
          }
 
       }
